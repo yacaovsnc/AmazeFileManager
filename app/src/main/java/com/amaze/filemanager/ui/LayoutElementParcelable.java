@@ -186,4 +186,28 @@ public class LayoutElementParcelable implements Parcelable {
     public String toString() {
         return title + "\n" + desc;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof LayoutElementParcelable)) {
+            return false;
+        } else {
+            LayoutElementParcelable layoutElementParcelable = (LayoutElementParcelable) obj;
+
+            if (this.title != layoutElementParcelable.getTitle() ||
+                    this.desc != layoutElementParcelable.getDesc() ||
+                    this.permissions != layoutElementParcelable.getPermissions() ||
+                    this.symlink != layoutElementParcelable.getSymlink() ||
+                    this.size != layoutElementParcelable.getSize() ||
+                    this.longSize != layoutElementParcelable.getlongSize() ||
+                    this.isDirectory != layoutElementParcelable.isDirectory() ||
+                    this.date != Long.parseLong(layoutElementParcelable.getDate()) ||
+                    this.date1 != Utils.getDate(layoutElementParcelable.getDate1(), CURRENT_YEAR)) {
+
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
 }

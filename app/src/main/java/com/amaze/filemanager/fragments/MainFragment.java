@@ -70,6 +70,7 @@ import com.amaze.filemanager.R;
 import com.amaze.filemanager.activities.MainActivity;
 import com.amaze.filemanager.activities.superclasses.ThemedActivity;
 import com.amaze.filemanager.adapters.RecyclerAdapter;
+import com.amaze.filemanager.asynchronous.runnables.SynchronizeFilesList;
 import com.amaze.filemanager.asynchronous.asynctasks.DeleteTask;
 import com.amaze.filemanager.asynchronous.asynctasks.LoadFilesListTask;
 import com.amaze.filemanager.asynchronous.handlers.FileHandler;
@@ -1448,7 +1449,29 @@ public class MainFragment extends android.support.v4.app.Fragment implements Bot
 
             (getActivity()).registerReceiver(decryptReceiver, new IntentFilter(EncryptDecryptUtils.DECRYPT_BROADCAST));
         }
+
         startFileObserver();
+
+        /*SynchronizeFilesList synchronizeFilesList = new SynchronizeFilesList(LIST_ELEMENTS, getCurrentPath());
+
+        synchronizeFilesList.watch(new SynchronizeFilesList.SynchronizeResultsCallback() {
+
+            @Override
+            public boolean isSuccessful() {
+                return false;
+            }
+
+            @Override
+            public boolean timeout() {
+                return false;
+            }
+
+            @Override
+            public LayoutElementParcelable newElement() {
+                return null;
+            }
+        });*/
+
         fixIcons(false);
     }
 
