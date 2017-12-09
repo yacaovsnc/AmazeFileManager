@@ -139,9 +139,9 @@ public class ServiceWatcherUtil {
         }*/
 
         if (pendingIntents.size()==0) {
+            pendingIntents.add(intent);
             init(context);
         }
-        pendingIntents.add(intent);
 
     }
 

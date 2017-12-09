@@ -322,13 +322,6 @@ public class CompressedExplorerFragment extends Fragment implements BottomBarBut
     public void onDestroyView() {
         super.onDestroyView();
         mainActivity.supportInvalidateOptionsMenu();
-
-        // needed to remove any extracted file from cache, when onResume was not called
-        // in case of opening any unknown file inside the zip
-
-        if (files.get(0).exists()) {
-            new DeleteTask(getActivity().getContentResolver(), getActivity(), this).execute(files);
-        }
     }
 
     @Override
@@ -338,6 +331,9 @@ public class CompressedExplorerFragment extends Fragment implements BottomBarBut
         mainActivity.floatingActionButton.hideMenuButton(true);
         Intent intent = new Intent(getActivity(), ExtractService.class);
         getActivity().bindService(intent, mServiceConnection, 0);
+
+        // reset file open cache flag
+        isOpen = false;
     }
 
     @Override
@@ -345,6 +341,18 @@ public class CompressedExplorerFragment extends Fragment implements BottomBarBut
         super.onPause();
 
         getActivity().unbindService(mServiceConnection);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // needed to remove any extracted file from cache, when onResume was not called
+        // in case of opening any unknown file inside the zip
+
+        if (!isOpen && files.get(0).exists()) {
+            new DeleteTask(getActivity().getContentResolver(), getActivity(), this).execute(files);
+        }
     }
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -361,8 +369,7 @@ public class CompressedExplorerFragment extends Fragment implements BottomBarBut
                 if (cacheFile.exists()) {
                     FileUtils.openFile(cacheFile, mainActivity, mainActivity.getPrefs());
                 }
-                // reset the flag and cache file, as it's root is already in the list for deletion
-                isOpen = false;
+                // reset cache file as it's root is already in the list for deletion
                 files.remove(files.size() - 1);
             }
         }
