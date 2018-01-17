@@ -11,7 +11,7 @@ variables:
 steps:
 - task: Gradle@1
   displayName: 'Build the APK'
-  gradleWrapperFile: 'gradlew'
+  wrapperScript: 'gradlew'
 
 - task: CopyFiles@2
   displayName: 'Copy the APK'
