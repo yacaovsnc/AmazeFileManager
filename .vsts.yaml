@@ -1,0 +1,27 @@
+# Android
+# Build your Android projects, run tests, and sign and align Android App Package files.
+# CodeLaunch YAML help: https://aka.ms/yaml
+
+queue:
+  name: 'Hosted VS2017'
+
+variables:
+  system.debug: 'true'
+
+steps:
+- task: Gradle@1
+  displayName: 'Build the APK'
+  gradleWrapperFile: 'gradlew'
+
+- task: CopyFiles@2
+  displayName: 'Copy the APK'
+  inputs:
+    contents: '**/*.apk'
+    targetFolder: '$(build.artifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish the APK'
+  inputs:
+    pathToPublish: '$(build.artifactStagingDirectory)'
+    artifactName: 'artifact'
+    artifactType: 'container'
